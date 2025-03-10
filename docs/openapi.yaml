@@ -1,0 +1,677 @@
+openapi: 3.0.3
+info:
+  title: Теплый дом
+  description: |-
+    Описание API для контроллеров проекта "Теплый дом"
+  version: 2.0.0
+tags:
+  - name: users 
+    description: Данные пользователей
+  - name: houses
+    description: Данные домов пользователей
+  - name: rooms
+    description: Данные комнат в домах пользователей
+  - name: devices
+    description: Данные устройств в домах пользователей
+  
+paths:
+  /user:
+    post:
+      tags:
+        - users
+      summary: Регистрация нового пользователя
+      description: Добавляет нового пользователя в систему
+      operationId: addUser
+      requestBody:
+        description: Данные нового пользователя
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+    put:
+      tags:
+        - users
+      summary:  Изменение данных пользователя
+      description: Изменяет данные пользователя в системе
+      operationId: editUser
+      requestBody:
+        description: Данные нового пользователя
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception   
+  /users/{userId}:
+    get:
+      tags:
+        - users
+      summary:  Получение данных пользователя
+      description: Получение данные пользователя в системе
+      operationId: getUser
+      parameters:
+        - name: userId
+          in: path
+          description: ID юзера
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+
+  /house:
+    post:
+      tags:
+        - houses
+      summary: Добавляет новый дом пользователя
+      description: Добавляет новый дом пользователя
+      operationId: addHouse
+      requestBody:
+        description: Данные нового дома
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HouseRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/HouseRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/House'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/House'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+    put:
+      tags:
+        - houses
+      summary: Редиктирует  дом пользователя
+      description: Редиктирует дом пользователя
+      operationId: editHouse
+      requestBody:
+        description: Данные нового дома
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HouseRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/HouseRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/House'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/House'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+  /house/{houseId}:
+    get:
+      tags:
+        - houses
+      summary:  Получение данных дома пользователя
+      description: Получение данные дома пользователя
+      operationId: getHouse
+      parameters:
+        - name: houseId
+          in: path
+          description: ID дома
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/House'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/House'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+  /houses/byuser/{userId}:
+    get:
+      tags:
+        - houses
+      summary:  Получение данных домов пользователя
+      description: Получение данные домов пользователя
+      operationId: getUserHouses
+      parameters:
+        - name: userId
+          in: path
+          description: ID юзера
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/House'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/House'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+
+  /room:
+    post:
+      tags:
+        - rooms
+      summary: Добавляет новую комнату
+      description: Добавляет новую комнату в дом пользователя
+      operationId: addRoom
+      requestBody:
+        description: Данные новой комнаты
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoomRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/RoomRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+    put:
+      tags:
+        - rooms
+      summary: Редактирует комнату
+      description: Редактирует комнату в доме пользователя
+      operationId: editRoom
+      requestBody:
+        description: Данные комнаты
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoomRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/RoomRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+  /room/{roomId}:
+    get:
+      tags:
+        - rooms
+      summary:  Получение данных комнаты
+      description: Получение данных комнаты
+      operationId: getRoom
+      parameters:
+        - name: roomId
+          in: path
+          description: ID комнаты
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Room'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+  /rooms/byhouse/{houseId}:
+    get:
+      tags:
+        - rooms
+      summary:  Получение данных комнат дома
+      description: Получение данных комнат дома
+      operationId: getHouseRooms
+      parameters:
+        - name: houseId
+          in: path
+          description: ID дома
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Room'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Room'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+
+  /device:
+    post:
+      tags:
+        - devices
+      summary: Добавляет новое устройство
+      description: Добавляет новое устройство в комнату
+      requestBody:
+        description: Данные нового устройства
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/DeviceRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Device'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+    put:
+      tags:
+        - devices
+      summary: Редактирует устройство
+      description: Редактирует устройство в комнате
+      requestBody:
+        description: Данные устройства
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/DeviceRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Device'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+  /device/{deviceId}:
+    get:
+      tags:
+        - devices
+      summary:  Получение данных устройства
+      description: Получение данных устройства
+      operationId: getDevice
+      parameters:
+        - name: deviceId
+          in: path
+          description: ID устройства
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Device'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+    post:
+      tags:
+        - devices
+      summary:  Получение текущих данных измерения с устройства
+      description: Получение текущих данных измерения с устройства
+      operationId: getDeviceValue
+      parameters:
+        - name: deviceId
+          in: path
+          description: ID устройства
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Device'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+  /device/byroom/{roomId}:
+    get:
+      tags:
+        - devices
+      summary:  Получение данных устройств в комнате
+      description: Получение данных устройств в комнате
+      operationId: getRoomsDevice
+      parameters:
+        - name: roomId
+          in: path
+          description: ID комнаты
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Device'          
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Device'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+components:
+  schemas:
+    UserRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        passwordHash:
+          type: string
+          example: '***'
+        phone:
+          type: string
+          example: '8(123)456-78-90'
+      xml:
+        name: user
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: James
+        email:
+          type: string
+          example: john@email.com
+        passwordHash:
+          type: string
+          example: '***'
+        phone:
+          type: string
+          example: '8(123)456-78-90'
+      xml:
+        name: user
+    HouseRequest:
+      type: object
+      properties:
+        userId:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: My house
+        address:
+          type: string
+          example: г. Москва ул. Красная площадь. д. 1
+      xml:
+        name: house
+    House:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: My house
+        address:
+          type: string
+          example: г. Москва ул. Красная площадь. д. 1
+      xml:
+        name: house
+    RoomRequest:
+      type: object
+      properties:
+        houseId:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: 'Гостинная'
+        description:
+          type: string
+          example: 'Гостинная комната'
+      xml:
+        name: house
+    Room:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: 'Гостинная'
+        description:
+          type: string
+          example: 'Гостинная комната'
+      xml:
+        name: room
+    DeviceRequest:
+      type: object
+      properties:
+        roomId:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: 'Датчик температры 1'
+        description:
+          type: string
+          example: 'Датчик температры в гостной комнате'
+        connectionSctring:
+          type: string
+          example: 'IP:127.0.0.1/temparature'
+      xml:
+        name: device
+    DeviceValue:
+      type: object
+      properties:
+        value:
+          type: string
+          example: '10'
+        egu:
+          type: string
+          example: 'C'
+        time:
+          type: string
+          format: date-time
+          example: '2000-01-01 00:00:00'
+        state:
+          type: string
+          example: 'ok'
+          enum:
+            - none
+            - valide
+            - incorrect
+            - historical
+      xml:
+        name: device
+    Device:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: 'Датчик температры 1'
+        description:
+          type: string
+          example: 'Датчик температры в гостной комнате'
+        connectionSctring:
+          type: string
+          example: 'IP:127.0.0.1/temparature'
+        state:
+          type: string
+          example: 'ok'
+          enum:
+            - none
+            - ok
+            - error
+            - not_configure
+        indication:
+          $ref: '#/components/schemas/DeviceValue'
+      xml:
+        name: device
